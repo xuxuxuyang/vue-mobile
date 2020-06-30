@@ -1,6 +1,7 @@
 <template>
   <div>
       home页面
+      <img src="~assets/logo.png" alt="">
   </div>
 </template>
 
