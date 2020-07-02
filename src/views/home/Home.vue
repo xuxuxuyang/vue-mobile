@@ -1,15 +1,14 @@
 <template>
   <div>
-    <toptitle />
-    <tabbar />
+    <navbar></navbar>
 
   </div>
 </template>
 
 <script>
 
-import tabbar from 'components/common/Tabbar'
-import toptitle from 'components/common/Toptitle'
+import tabbar from 'components/common/tabbar/TabBar'
+import navbar from 'components/common/navbar/NavBar'
 
 export default {
   methods: {
@@ -25,8 +24,7 @@ export default {
   },
   components: {
     tabbar,
-    toptitle
-
+    navbar
   }
 };
 </script>

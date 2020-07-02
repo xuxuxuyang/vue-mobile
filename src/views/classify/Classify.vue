@@ -1,13 +1,13 @@
 <template>
   <div class=''>
-    <mt-header fixed
-               title="首页"></mt-header>
   </div>
 </template>
 
 <script>
+
 export default {
-  components: {},
+  components: {
+  },
   props: {},
   data () {
     return {
