@@ -1,7 +1,7 @@
 <template>
   <div class=''>
     <mt-header fixed
-               title="home页面"></mt-header>
+               title="首页"></mt-header>
   </div>
 </template>
 
