@@ -1,38 +1,45 @@
 <template>
-  <div>
-    <navbar></navbar>
+  <div class="home">
+    <navbar class="navbar">
+      <div slot="center">首页</div>
+    </navbar>
 
+    <mt-swipe :auto="4000">
+      <mt-swipe-item>1</mt-swipe-item>
+      <mt-swipe-item>2</mt-swipe-item>
+      <mt-swipe-item>3</mt-swipe-item>
+    </mt-swipe>
   </div>
+
 </template>
 
 <script>
-
-import tabbar from 'components/common/tabbar/TabBar'
 import navbar from 'components/common/navbar/NavBar'
+import { Swipe, SwipeItem } from 'mint-ui';
 
+import request from 'network/home/request'
 export default {
   methods: {
+  },
+  created () {
 
   },
   data () {
     return {
-
+      Swiperdata: ''
     };
   },
-  methods: {
-
-  },
   components: {
-    tabbar,
-    navbar
+    navbar,
   }
 };
 </script>
 
 <style>
-.aaa {
-  width: 100px;
-  height: 100px;
+.home {
+  height: 100%;
+}
+.navbar {
   background-color: pink;
 }
 </style>
