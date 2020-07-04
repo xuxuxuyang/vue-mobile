@@ -1,9 +1,9 @@
 <template>
   <div class="home">
     <!-- 头部 navbar-->
-    <navbar class="navbar">
-      <div slot="center">购物街</div>
-    </navbar>
+    <mt-header fixed
+               title="购物街"
+               class="header" />
     <!-- 轮播图  swiper-->
     <mt-swipe :auto="4000"
               class="swiper">
@@ -16,19 +16,37 @@
         </a>
       </mt-swipe-item>
     </mt-swipe>
-
-    <recommends :recommends="recommends"></recommends>
-
+    <!-- recomends组件 -->
+    <recommends :recommends="recommends" />
+    <!-- feature组件 -->
+    <feature />
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
+    <div>1</div>
   </div>
 </template>
 
 <script>
-import navbar from 'components/common/navbar/NavBar'
-
 import { getHomedata } from 'network/home.js'
 import { Swipe, SwipeItem } from 'mint-ui';
 
 import recommends from './childComps/Recommends'
+import feature from './childComps/Feature'
 
 export default {
   // 获取home页面的数据
@@ -50,13 +68,17 @@ export default {
     };
   },
   components: {
-    navbar,
-    recommends
+    recommends,
+    feature
   }
 };
 </script>
 
 <style>
+.header {
+  background-color: pink;
+  font-size: 16px;
+}
 .swiper {
   width: 100%;
   height: 200px;
@@ -70,6 +92,7 @@ export default {
   color: white;
   font-size: 18px;
   font-weight: 400;
+  margin-top: 40px;
 }
 .navbar {
   background-color: pink;
