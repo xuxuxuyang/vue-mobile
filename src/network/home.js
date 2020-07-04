@@ -1,6 +1,6 @@
 import { request } from 'network/request'
 
-export function getSwiperdata () {
+export function getHomedata () {
   return request({
     url: '/home/multidata'
   })

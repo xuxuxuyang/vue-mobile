@@ -1,9 +1,10 @@
 <template>
   <div class="home">
+    <!-- 头部 navbar-->
     <navbar class="navbar">
-      <div slot="center">首页</div>
+      <div slot="center">购物街</div>
     </navbar>
-
+    <!-- 轮播图  swiper-->
     <mt-swipe :auto="4000"
               class="swiper">
       <mt-swipe-item v-for="(item,index) in Swiperdata"
@@ -16,30 +17,41 @@
       </mt-swipe-item>
     </mt-swipe>
 
-  </div>
+    <recommends :recommends="recommends"></recommends>
 
+  </div>
 </template>
 
 <script>
 import navbar from 'components/common/navbar/NavBar'
 
-import { getSwiperdata } from 'network/home.js'
+import { getHomedata } from 'network/home.js'
 import { Swipe, SwipeItem } from 'mint-ui';
 
+import recommends from './childComps/Recommends'
+
 export default {
+  // 获取home页面的数据
   created () {
-    getSwiperdata().then(res => {
+    // 轮播图数据
+    getHomedata().then(res => {
+      // 保存轮播图数据
       this.Swiperdata = res.data.banner.list
-      console.log(this.Swiperdata);
+      //保存recommend数据
+      this.recommends = res.data.recommend.list
+      console.log(this.recommends);
+
     })
   },
   data () {
     return {
-      Swiperdata: []
+      Swiperdata: [],
+      recommends: []
     };
   },
   components: {
     navbar,
+    recommends
   }
 };
 </script>
@@ -47,7 +59,7 @@ export default {
 <style>
 .swiper {
   width: 100%;
-  height: 250px;
+  height: 200px;
 }
 .swiperitem img {
   width: 100%;
@@ -55,6 +67,9 @@ export default {
 }
 .home {
   height: 100%;
+  color: white;
+  font-size: 18px;
+  font-weight: 400;
 }
 .navbar {
   background-color: pink;
