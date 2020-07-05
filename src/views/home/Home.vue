@@ -20,7 +20,7 @@
     <recommends :recommends="recommends" />
     <!-- feature组件 -->
     <feature />
-    <!-- choosenavabar组件 -->
+    <!-- choosenavbar组件 -->
     <mt-navbar v-model="selected"
                class="choosenavabar">
       <mt-tab-item id="1">
@@ -33,8 +33,24 @@
         <span>精选</span>
       </mt-tab-item>
     </mt-navbar>
-    <!-- goodslist组件 -->
-    <goodslist :goods="goods['pop'].list" />
+    <!-- tab-container组件配合choosenavbar组件使用 -->
+    <mt-tab-container v-model="selected">
+      <mt-tab-container-item id="1">
+        <!-- goodslist组件 -->
+        <goodslist :goods="goods['pop'].list"
+                   v-infinite-scroll="loadMore"
+                   infinite-scroll-disabled="loading"
+                   infinite-scroll-distance="10" />
+      </mt-tab-container-item>
+      <mt-tab-container-item id="2">
+        <!-- goodslist组件 -->
+        <goodslist :goods="goods['new'].list" />
+      </mt-tab-container-item>
+      <mt-tab-container-item id="3">
+        <!-- goodslist组件 -->
+        <goodslist :goods="goods['sell'].list" />
+      </mt-tab-container-item>
+    </mt-tab-container>
   </div>
 </template>
 
@@ -57,8 +73,19 @@ export default {
         console.log(this.goods[type].list);
         this.goods[type].page += 1
       })
+    },
+    //根据当前选中的类型加载对应数据
+    loadMore () {
+      if (this.selected == 1) {
+        this.getgoodsdata('pop')
+      } else if (this.selected == 2) {
+        this.getgoodsdata('new')
+      } else {
+        this.getgoodsdata('sell')
+      }
     }
   },
+
   // 获取home页面的数据
   created () {
     // 获取首页数据
@@ -127,5 +154,8 @@ img {
 .mint-tab-item-label {
   font-size: 15px;
   font-weight: 530;
+}
+.cchoosenavabar {
+  margin-top: 600px;
 }
 </style>

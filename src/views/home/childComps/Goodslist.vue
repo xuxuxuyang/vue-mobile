@@ -3,7 +3,7 @@
     <goodsitem v-for="(item,index) in goods"
                :key="index"
                class="goodsitem">
-      <div class="item">
+      <div class="goodsitems">
         <a :href="item.link">
           <img :src="item.show.img"
                alt="">
@@ -38,7 +38,8 @@ export default {
     }
   },
   computed: {},
-  methods: {},
+  methods: {
+  },
 }
 </script>
 
@@ -48,18 +49,22 @@ export default {
   flex-wrap: wrap;
   justify-content: space-around;
 }
-.item {
-  width: 200px;
-  height: 240px;
+.goodsitem {
+  width: 48%;
+  margin-top: 10px;
   p {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .goodsitem {
+    width: 100%;
+  }
 }
 img {
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  height: 250px;
+  border-radius: 5px;
 }
 span,
 p {
