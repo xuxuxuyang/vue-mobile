@@ -5,52 +5,58 @@
                title="购物街"
                class="header" />
     <!-- 轮播图  swiper-->
-    <mt-swipe :auto="4000"
-              class="swiper">
-      <mt-swipe-item v-for="(item,index) in Swiperdata"
-                     :key="index"
-                     class="swiperitem">
-        <a :href="item.link">
-          <img :src="item.image"
-               alt="">
-        </a>
-      </mt-swipe-item>
-    </mt-swipe>
-    <!-- recomends组件 -->
-    <recommends :recommends="recommends" />
-    <!-- feature组件 -->
-    <feature />
-    <!-- choosenavbar组件 -->
-    <mt-navbar v-model="selected"
-               class="choosenavabar">
-      <mt-tab-item id="1">
-        <span>流行</span>
-      </mt-tab-item>
-      <mt-tab-item id="2">
-        <span>新款</span>
-      </mt-tab-item>
-      <mt-tab-item id="3">
-        <span>精选</span>
-      </mt-tab-item>
-    </mt-navbar>
-    <!-- tab-container组件配合choosenavbar组件使用 -->
-    <mt-tab-container v-model="selected">
-      <mt-tab-container-item id="1">
-        <!-- goodslist组件 -->
-        <goodslist :goods="goods['pop'].list"
-                   v-infinite-scroll="loadMore"
-                   infinite-scroll-disabled="loading"
-                   infinite-scroll-distance="10" />
-      </mt-tab-container-item>
-      <mt-tab-container-item id="2">
-        <!-- goodslist组件 -->
-        <goodslist :goods="goods['new'].list" />
-      </mt-tab-container-item>
-      <mt-tab-container-item id="3">
-        <!-- goodslist组件 -->
-        <goodslist :goods="goods['sell'].list" />
-      </mt-tab-container-item>
-    </mt-tab-container>
+    <scroll ref="scroll">
+      <mt-swipe :auto="4000"
+                class="swiper">
+        <mt-swipe-item v-for="(item,index) in Swiperdata"
+                       :key="index"
+                       class="swiperitem">
+          <a :href="item.link">
+            <img :src="item.image"
+                 alt="">
+          </a>
+        </mt-swipe-item>
+      </mt-swipe>
+      <!-- recomends组件 -->
+      <recommends :recommends="recommends" />
+      <!-- feature组件 -->
+      <feature />
+      <!-- choosenavbar组件 -->
+      <van-sticky :offset-top="40">
+        <mt-navbar v-model="selected"
+                   class="choosenavabar">
+          <mt-tab-item id="1">
+            <span>流行</span>
+          </mt-tab-item>
+          <mt-tab-item id="2">
+            <span>新款</span>
+          </mt-tab-item>
+          <mt-tab-item id="3">
+            <span>精选</span>
+          </mt-tab-item>
+        </mt-navbar>
+      </van-sticky>
+      <!-- tab-container组件配合choosenavbar组件使用 -->
+      <mt-tab-container v-model="selected">
+        <mt-tab-container-item id="1">
+          <!-- goodslist组件 -->
+          <goodslist :goods="goods['pop'].list"
+                     v-infinite-scroll="loadMore"
+                     infinite-scroll-disabled="loading"
+                     infinite-scroll-distance="10" />
+        </mt-tab-container-item>
+        <mt-tab-container-item id="2">
+          <!-- goodslist组件 -->
+          <goodslist :goods="goods['new'].list" />
+        </mt-tab-container-item>
+        <mt-tab-container-item id="3">
+          <!-- goodslist组件 -->
+          <goodslist :goods="goods['sell'].list" />
+        </mt-tab-container-item>
+      </mt-tab-container>
+    </scroll>
+    <backtop @click.native="backtop">
+    </backtop>
   </div>
 </template>
 
@@ -62,6 +68,9 @@ import recommends from './childComps/Recommends'
 import feature from './childComps/Feature'
 import goodslist from './childComps/Goodslist'
 
+import scroll from './childComps/Scroll'
+import backtop from './childComps/Backtop'
+
 
 
 export default {
@@ -70,7 +79,6 @@ export default {
       const page = this.goods[type].page + 1
       getHomegoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.list)
-        console.log(this.goods[type].list);
         this.goods[type].page += 1
       })
     },
@@ -83,7 +91,11 @@ export default {
       } else {
         this.getgoodsdata('sell')
       }
-    }
+    },
+    backtop () {
+      this.$refs.scroll.scroll.scrollTo(0, 0, 1000)
+
+    },
   },
 
   // 获取home页面的数据
@@ -116,7 +128,9 @@ export default {
   components: {
     recommends,
     feature,
-    goodslist
+    goodslist,
+    backtop,
+    scroll
   }
 };
 </script>
