@@ -1,80 +1,97 @@
 <template>
   <div class="home">
-    <!-- 头部 navbar-->
+    <!-- 头部mint ui的 navbar组件-->
     <mt-header fixed
                title="购物街"
                class="header" />
-    <!-- 轮播图  swiper-->
-    <scroll ref="scroll">
-      <mt-swipe :auto="4000"
-                class="swiper">
-        <mt-swipe-item v-for="(item,index) in Swiperdata"
-                       :key="index"
-                       class="swiperitem">
-          <a :href="item.link">
-            <img :src="item.image"
-                 alt="">
-          </a>
-        </mt-swipe-item>
-      </mt-swipe>
-      <!-- recomends组件 -->
-      <recommends :recommends="recommends" />
-      <!-- feature组件 -->
-      <feature />
-      <!-- choosenavbar组件 -->
-      <van-sticky :offset-top="40">
-        <mt-navbar v-model="selected"
-                   class="choosenavabar">
-          <mt-tab-item id="1">
-            <span>流行</span>
-          </mt-tab-item>
-          <mt-tab-item id="2">
-            <span>新款</span>
-          </mt-tab-item>
-          <mt-tab-item id="3">
-            <span>精选</span>
-          </mt-tab-item>
-        </mt-navbar>
-      </van-sticky>
-      <!-- tab-container组件配合choosenavbar组件使用 -->
-      <mt-tab-container v-model="selected">
-        <mt-tab-container-item id="1">
-          <!-- goodslist组件 -->
-          <goodslist :goods="goods['pop'].list"
-                     v-infinite-scroll="loadMore"
-                     infinite-scroll-disabled="loading"
-                     infinite-scroll-distance="10" />
-        </mt-tab-container-item>
-        <mt-tab-container-item id="2">
-          <!-- goodslist组件 -->
-          <goodslist :goods="goods['new'].list" />
-        </mt-tab-container-item>
-        <mt-tab-container-item id="3">
-          <!-- goodslist组件 -->
-          <goodslist :goods="goods['sell'].list" />
-        </mt-tab-container-item>
-      </mt-tab-container>
-    </scroll>
-    <backtop @click.native="backtop">
+    <!-- 轮播图mint ui的  swiper组件-->
+    <mt-swipe :auto="4000"
+              class="swiper">
+      <mt-swipe-item v-for="(item,index) in Swiperdata"
+                     :key="index"
+                     class="swiperitem">
+        <a :href="item.link">
+          <img :src="item.image"
+               alt=""
+               @load="imagesload">
+        </a>
+      </mt-swipe-item>
+    </mt-swipe>
+    <!-- recomends组件 -->
+    <recommends :recommends="recommends" />
+    <!-- feature组件 -->
+    <feature />
+    <!-- choosenavbar组件 mint ui的组件 -->
+    <mt-navbar v-model="selected"
+               ref="choosenavbar"
+               :class="{fixed:isfixed}">
+      <mt-tab-item id="1">
+        <span>流行</span>
+      </mt-tab-item>
+      <mt-tab-item id="2">
+        <span>新款</span>
+      </mt-tab-item>
+      <mt-tab-item id="3">
+        <span>精选</span>
+      </mt-tab-item>
+    </mt-navbar>
+    <!-- mint ui的tab-container组件配合choosenavbar组件使用 -->
+    <mt-tab-container v-model="selected">
+      <mt-tab-container-item id="1">
+        <!-- goodslist组件 -->
+        <goodslist :goods="goods['pop'].list"
+                   v-infinite-scroll="loadMore"
+                   infinite-scroll-disabled="loading"
+                   infinite-scroll-distance="10" />
+      </mt-tab-container-item>
+      <mt-tab-container-item id="2">
+        <!-- goodslist组件 -->
+        <goodslist :goods="goods['new'].list" />
+      </mt-tab-container-item>
+      <mt-tab-container-item id="3">
+        <!-- goodslist组件 -->
+        <goodslist :goods="goods['sell'].list" />
+      </mt-tab-container-item>
+    </mt-tab-container>
+    <!-- 点击回到顶部的backtop组件 -->
+    <backtop @click.native="backtop"
+             ref="backtop"
+             v-show="backtopisshow">
     </backtop>
   </div>
 </template>
 
 <script>
+//获取首页数据的封装函数
 import { getHomedata, getHomegoods } from 'network/home.js'
-import { Swipe, SwipeItem } from 'mint-ui';
-
+//抽离解耦的自创组件
 import recommends from './childComps/Recommends'
 import feature from './childComps/Feature'
 import goodslist from './childComps/Goodslist'
-
-import scroll from './childComps/Scroll'
 import backtop from './childComps/Backtop'
-
-
+//better-scroll的封装引入
+import scroll from './childComps/Scroll'
 
 export default {
   methods: {
+    //监听页面滚动的两个方法
+    listenerFunction (e) {
+      document.addEventListener('scroll', this.handleScroll, true);
+    },
+    handleScroll () {
+      if (window.pageYOffset < 500) {
+        this.backtopisshow = false
+      } else {
+        this.backtopisshow = true
+      }
+
+      if (window.pageYOffset < 676) {
+        this.isfixed = false
+      } else {
+        this.isfixed = true
+      }
+    },
+    //封装的根据类型获取goodslist商品数据方法（可重复调用获取下一页的数据）
     getgoodsdata (type) {
       const page = this.goods[type].page + 1
       getHomegoods(type, page).then(res => {
@@ -82,7 +99,7 @@ export default {
         this.goods[type].page += 1
       })
     },
-    //根据当前选中的类型加载对应数据
+    //mint ui提供的方法下拉加载更多 -->根据当前选中的类型加载对应数据
     loadMore () {
       if (this.selected == 1) {
         this.getgoodsdata('pop')
@@ -92,15 +109,25 @@ export default {
         this.getgoodsdata('sell')
       }
     },
+    //点击backtop返回顶部的方法
     backtop () {
-      this.$refs.scroll.scroll.scrollTo(0, 0, 1000)
-
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      if (scrollTop > 0) {
+        window.scrollTo(0, 0)
+      }
     },
+    //监听图片加载完成的方法
+    imagesload () {
+      if (!this.isload) {
+        this.isload = true
+        this.offsetTop = this.$refs.choosenavbar.$el.offsetTop
+      }
+    }
   },
-
-  // 获取home页面的数据
   created () {
-    // 获取首页数据
+    //监听页面滚动的函数
+    this.listenerFunction();
+    // 获取home页面数据
     getHomedata().then(res => {
       // 保存轮播图数据
       this.Swiperdata = res.data.banner.list
@@ -112,8 +139,16 @@ export default {
     this.getgoodsdata('new')
     this.getgoodsdata('sell')
   },
+  //页面销毁前一直保持监听滚动事件
+  beforeDestroy () {
+    document.removeEventListener("scroll", this.listenerFunction);
+  },
   data () {
     return {
+      isfixed: false,
+      backtopisshow: false,
+      isload: false,
+      offsetTop: '',
       Swiperdata: [],
       recommends: [],
       //默认选中
@@ -122,7 +157,7 @@ export default {
         'pop': { page: 0, list: [] },
         'new': { page: 0, list: [] },
         'sell': { page: 0, list: [] }
-      }
+      },
     };
   },
   components: {
@@ -137,6 +172,8 @@ export default {
 
 <style>
 .header {
+  position: fixed;
+  z-index: -1;
   background-color: pink;
   font-size: 16px;
 }
@@ -169,7 +206,11 @@ img {
   font-size: 15px;
   font-weight: 530;
 }
-.cchoosenavabar {
-  margin-top: 600px;
+.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
 }
 </style>
