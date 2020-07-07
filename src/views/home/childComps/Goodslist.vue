@@ -2,12 +2,11 @@
   <div class="goodslist">
     <goodsitem v-for="(item,index) in goods"
                :key="index"
-               class="goodsitem">
+               class="goodsitem"
+               :goodsitems="item">
       <div class="goodsitems">
-        <a :href="item.link">
-          <img :src="item.show.img"
-               alt="">
-        </a>
+        <img :src="item.show.img"
+             alt="">
         <p>{{item.title}}</p>
         <span>{{item.price}}</span>
         <span>

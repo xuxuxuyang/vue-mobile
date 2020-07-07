@@ -4,6 +4,21 @@
     <mt-header fixed
                title="购物街"
                class="header" />
+    <!-- 吸顶效果的复用组件 -->
+    <mt-navbar v-model="selected"
+               ref="choosenavbar"
+               class="fixed"
+               v-show="isshow">
+      <mt-tab-item id="1">
+        <span>流行</span>
+      </mt-tab-item>
+      <mt-tab-item id="2">
+        <span>新款</span>
+      </mt-tab-item>
+      <mt-tab-item id="3">
+        <span>精选</span>
+      </mt-tab-item>
+    </mt-navbar>
     <!-- 轮播图mint ui的  swiper组件-->
     <mt-swipe :auto="4000"
               class="swiper">
@@ -23,8 +38,7 @@
     <feature />
     <!-- choosenavbar组件 mint ui的组件 -->
     <mt-navbar v-model="selected"
-               ref="choosenavbar"
-               :class="{fixed:isfixed}">
+               ref="choosenavbar">
       <mt-tab-item id="1">
         <span>流行</span>
       </mt-tab-item>
@@ -85,10 +99,10 @@ export default {
         this.backtopisshow = true
       }
 
-      if (window.pageYOffset < 676) {
-        this.isfixed = false
+      if (window.pageYOffset < 636) {
+        this.isshow = false
       } else {
-        this.isfixed = true
+        this.isshow = true
       }
     },
     //封装的根据类型获取goodslist商品数据方法（可重复调用获取下一页的数据）
@@ -145,7 +159,7 @@ export default {
   },
   data () {
     return {
-      isfixed: false,
+      isshow: false,
       backtopisshow: false,
       isload: false,
       offsetTop: '',
@@ -208,6 +222,7 @@ img {
 }
 .fixed {
   position: fixed;
+  margin-top: 40px;
   top: 0;
   left: 0;
   right: 0;
