@@ -14,6 +14,7 @@
 <script>
 import { getgoodsitems } from 'network/detail'
 export default {
+  name: "Detail",
   created () {
     this.iid = this.$route.params.iid
     console.log(this.iid);

@@ -87,6 +87,7 @@ import backtop from './childComps/Backtop'
 import scroll from './childComps/Scroll'
 
 export default {
+  name: "Home",
   methods: {
     //监听页面滚动的两个方法
     listenerFunction (e) {

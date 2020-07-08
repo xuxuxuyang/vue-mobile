@@ -1,30 +1,19 @@
 <template>
   <div id="app">
-    <router-view />
-    <tabbar></tabbar>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
+    <tabbar />
   </div>
 </template>
 
 <script>
 
 import tabbar from 'components/common/tabbar/TabBar'
-import navbar from 'components/common/navbar/NavBar'
 
 export default {
-  methods: {
-
-  },
-  data () {
-    return {
-
-    };
-  },
-  methods: {
-
-  },
   components: {
     tabbar,
-    navbar
   }
 };
 </script>
