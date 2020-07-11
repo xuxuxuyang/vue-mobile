@@ -88,6 +88,14 @@ import scroll from './childComps/Scroll'
 
 export default {
   name: "Home",
+  activated () {
+    console.log(666);
+
+  },
+  deactivated () {
+    console.log(888);
+
+  },
   methods: {
     //监听页面滚动的两个方法
     listenerFunction (e) {
@@ -140,6 +148,8 @@ export default {
     }
   },
   created () {
+    console.log(6);
+
     //监听页面滚动的函数
     this.listenerFunction();
     // 获取home页面数据

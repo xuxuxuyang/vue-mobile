@@ -1,6 +1,6 @@
 <template>
   <div class=''>
-    Shopcat
+    Shopcar
   </div>
 </template>
 
