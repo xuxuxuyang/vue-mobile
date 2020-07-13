@@ -63,7 +63,7 @@ export default {
   computed: {},
   methods: {
     addcat () {
-      const addgoods = {}
+      // goods ={}
       //找到对应的数据赋值给这个对象
       // addgoods.image = this.goods.image
       // addgoods.title = this.goods.title
@@ -71,7 +71,7 @@ export default {
       // ....
       // ....
       //操作vueX的数据一定要用vueX里的方法！
-      this.$store.commit('addcat', addgoods)
+      this.$store.dispatch('addcat', this.goods)
       console.log(this.$store.state.goodslist);
     }
   },
